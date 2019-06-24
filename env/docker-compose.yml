@@ -1,0 +1,22 @@
+version: '3'
+services:
+  webserver_cv:
+    image: nginx
+    container_name: cv-webserver
+    restart: unless-stopped
+    volumes:
+      - /home/damien/cv/env/site.conf:/etc/nginx/conf.d/site.conf
+      - /home/damien/cv/cv-code/build:/var/www/html
+    labels:
+      - "traefik.docker.network=traefik_default"
+      - "traefik.enable=true"
+      - 'traefik.frontend.rule=Host:cv.backndev.fr'
+    ports:
+      - "9100:80"
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external:
+      name: traefik_default
